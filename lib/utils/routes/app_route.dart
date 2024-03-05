@@ -1,3 +1,5 @@
+// ignore_for_file: unreachable_switch_case
+
 import 'package:employeesapp/models/contact_model.dart';
 import 'package:employeesapp/res/log_info.dart';
 import 'package:employeesapp/view/add_employee_screen/add_employee_screen_view.dart';

@@ -157,14 +157,14 @@ class LoggingInterceptor extends InterceptorsWrapper {
   @override
   Future onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    DateTime _now = DateTime.now().toUtc();
+    DateTime now = DateTime.now().toUtc();
     // String? token = await LocalStorage().readlocalStorage();
     final prefs = await SharedPreferences.getInstance();
     final String? accesstoken = prefs.getString(AppConstants.userKey);
     // String accesstoken  = prefs.getString('access_token');
     //.getString('action');
     options.headers.addAll({
-      'Timestamp': _now.millisecondsSinceEpoch,
+      'Timestamp': now.millisecondsSinceEpoch,
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $accesstoken',
       'Access-Control-Allow-Origin': '*',
@@ -193,7 +193,7 @@ class LoggingInterceptor extends InterceptorsWrapper {
         return super.onResponse(response, handler);
       } else if (response.data['status'] == true) {
         return response.data['status'] == true
-            // TODO
+         
             ? super.onResponse(response, handler)
             : handler.reject(DioException(
                 requestOptions: response.requestOptions,
@@ -203,7 +203,7 @@ class LoggingInterceptor extends InterceptorsWrapper {
         //newly added else
       } else {
         return response.data['status'] == true
-            // TODO
+     
             ? super.onResponse(response, handler)
             : handler.reject(DioException(
                 requestOptions: response.requestOptions,
@@ -222,7 +222,7 @@ class LoggingInterceptor extends InterceptorsWrapper {
   }
 
   @override
-  Future onError(DioException error, ErrorInterceptorHandler handler) async {
-    return super.onError(error, handler);
+  Future onError(DioException err, ErrorInterceptorHandler handler) async {
+    return super.onError(err, handler);
   }
 }

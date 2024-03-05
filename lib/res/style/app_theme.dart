@@ -5,7 +5,7 @@ class AppThemeData {
   static ThemeData lightTheme = ThemeData(
     primaryColor: ColorResources.primary,
     // hintColor: Colors.green,
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: ColorResources.buttonColor, shape: CircleBorder()),
     scaffoldBackgroundColor: ColorResources.backgroundColor,
     textTheme: const TextTheme().copyWith(

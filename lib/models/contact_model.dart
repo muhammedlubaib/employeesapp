@@ -1,53 +1,5 @@
-import 'package:employeesapp/utils/dummydata.dart';
-import 'dart:convert';
 
-// List<PhoneNumberModel> contactslist = [
-//   PhoneNumberModel(
-//       designation: "SuperVisor",
-//       name: randomNames,
-//       gender: "male",
-//       address: randomAddresses ?? "",
-//       dob: DateTime.now(),
-//       email: "luabib@gmail.com",
-//       profileImage: portraitImage,
-//       phoneNumber: randomPhoneNumbers),
-//   PhoneNumberModel(
-//       name: randomNames,
-//       designation: "SuperVisor",
-//       gender: "male",
-//       address: randomAddresses,
-//       dob: DateTime.now(),
-//       email: "luabib@gmail.com",
-//       profileImage: portraitImage ?? "",
-//       phoneNumber: randomPhoneNumbers),
-//   PhoneNumberModel(
-//       name: randomNames,
-//       designation: "Ceo",
-//       gender: "male",
-//       address: randomAddresses,
-//       dob: DateTime.now(),
-//       email: "luabib@gmail.com",
-//       profileImage: portraitImage ?? "",
-//       phoneNumber: randomPhoneNumbers),
-//   PhoneNumberModel(
-//       name: randomNames,
-//       designation: "Dircitor",
-//       gender: "male",
-//       address: randomAddresses,
-//       dob: DateTime.now(),
-//       email: "luabib@gmail.com",
-//       profileImage: portraitImage ?? "",
-//       phoneNumber: randomPhoneNumbers),
-//   PhoneNumberModel(
-//       name: randomNames,
-//       designation: "Cleaner",
-//       gender: "male",
-//       address: randomAddresses,
-//       dob: DateTime.now(),
-//       email: "luabib@gmail.com",
-//       profileImage: portraitImage ?? "",
-//       phoneNumber: randomPhoneNumbers)
-// ];
+import 'dart:convert';
 
 class PhoneNumberModel {
   final String name;

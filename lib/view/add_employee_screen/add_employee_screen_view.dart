@@ -1,7 +1,9 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'dart:io';
 
 import 'package:employeesapp/gen/assets.gen.dart';
-import 'package:employeesapp/models/contact_model.dart';
+
 import 'package:employeesapp/models/designation_model.dart';
 import 'package:employeesapp/models/drop_down_model.dart';
 import 'package:employeesapp/models/employee_add_params.dart';
@@ -20,7 +22,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -54,6 +56,8 @@ class _AddEmployeeScreenViewState extends State<AddEmployeeScreenView> {
   DropdownModel? selectedStudyLevel;
   DropdownModel? selectedGender;
 
+  LoginProvider controller({required bool uiRender}) =>
+      Provider.of(context, listen: uiRender);
   DateTime selectedDob = DateTime.now();
   Future<void> selectDOb(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
@@ -81,9 +85,6 @@ class _AddEmployeeScreenViewState extends State<AddEmployeeScreenView> {
         dobController.text =
             _formatDate(pickedDate.toString().substring(0, 10));
         //_formatDate pickedDate.toString().substring(0, 10);
-        print('selected Date $selectedDob');
-
-        print(' pickedDate $pickedDate');
       });
     }
   }
@@ -103,10 +104,11 @@ class _AddEmployeeScreenViewState extends State<AddEmployeeScreenView> {
 
   final RegExp emailRegex = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-  final addFormKey = GlobalKey<FormState>();
+  final loginFormkey = GlobalKey<FormState>();
 
   @override
   void initState() {
+    // controller(uiRender: false).validateFrom(loginFormkey);
     pagingController.addPageRequestListener(_handlePageRequest);
     super.initState();
   }
@@ -119,7 +121,6 @@ class _AddEmployeeScreenViewState extends State<AddEmployeeScreenView> {
   }
 
   Future<void> _handlePageRequest(int pageKey) async {
-    print("check 123");
     fetchPage(pageKey);
   }
 
@@ -135,9 +136,6 @@ class _AddEmployeeScreenViewState extends State<AddEmployeeScreenView> {
               .designationlistApi(context: context, page: pageKey);
 
       final isLastPage = newItems.isLastPage;
-      print('###isLastPage: ${newItems.isLastPage}');
-      print('###currenPage: ${newItems.currenPage}');
-      print('###nextPage: ${newItems.nextPage}');
 
       if (isLastPage) {
         pagingController.appendLastPage(newItems.newItems);
@@ -177,19 +175,25 @@ class _AddEmployeeScreenViewState extends State<AddEmployeeScreenView> {
                         ),
                         gap,
                         Visibility(
-                          visible: (selectedImag == null && checkvalidation),
+                          visible: selectedImag == null,
+                          // &&
+                          //     controller(uiRender: true).isValid),
                           child: Text(
                             "Please Upload Profile Image",
                             style: body1.red,
                           ),
                         ),
                         Form(
-                          key: addFormKey,
+                          key: loginFormkey,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               gapLarge,
                               TextFieldCustom(
+                                onChanged: (text) {
+                                  // controller(uiRender: false)
+                                  //     .validateFrom(loginFormkey);
+                                },
                                 hintText: "Enter Name",
                                 labelText: "First Name",
                                 isMandidatory: true,
@@ -200,9 +204,14 @@ class _AddEmployeeScreenViewState extends State<AddEmployeeScreenView> {
                                   if (value!.isEmpty) {
                                     return "Please select First Name";
                                   }
+                                  return null;
                                 },
                               ),
                               TextFieldCustom(
+                                onChanged: (text) {
+                                  // controller(uiRender: false)
+                                  //     .validateFrom(loginFormkey);
+                                },
                                 hintText: "Enter Name",
                                 labelText: "Last Name",
                                 isMandidatory: true,
@@ -213,6 +222,7 @@ class _AddEmployeeScreenViewState extends State<AddEmployeeScreenView> {
                                   if (value!.isEmpty) {
                                     return "Please select Last Name";
                                   }
+                                  return null;
                                 },
                               ),
                               TextFieldCustom(
@@ -231,6 +241,8 @@ class _AddEmployeeScreenViewState extends State<AddEmployeeScreenView> {
                                 },
                                 onChanged: (text) {
                                   if (text.length >= 10) {
+                                    // controller(uiRender: false)
+                                    //     .validateFrom(loginFormkey);
                                     FocusScope.of(context).unfocus();
                                   }
                                 },
@@ -254,24 +266,39 @@ class _AddEmployeeScreenViewState extends State<AddEmployeeScreenView> {
                                   }
                                   return null;
                                 },
+
                                 controller: emailController,
-                              ),
-                              TextFieldCustom(
-                                keyboardType: TextInputType.streetAddress,
-                                // autovalidateMode: AutovalidateMode.onUserInteraction,
-                                hintText: "Enter address",
-                                labelText: "address",
-                                controller: addressnumberController,
-                                maxLines: 5,
-                                minLines: 3,
-                                textInputAction: TextInputAction.done,
                               ),
                               TextFieldCustom(
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
+
+                                keyboardType: TextInputType.streetAddress,
+                                // autovalidateMode: AutovalidateMode.onUserInteraction,
+                                hintText: "Enter address",
+                                labelText: "address",
+                                isMandidatory: true,
+                                controller: addressnumberController,
+                                maxLines: 5,
+                                minLines: 3,
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return "please enter Address";
+                                  }
+                                  return null;
+                                },
+                                textInputAction: TextInputAction.done,
+                              ),
+                              TextFieldCustom(
+                                onChanged: (text) {
+                                  // controller(uiRender: false)
+                                  //     .validateFrom(loginFormkey);
+                                },
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 readOnlyField: true,
                                 suffixWidget: CupertinoButton(
-                                    padding: EdgeInsets.all(4),
+                                    padding: const EdgeInsets.all(4),
                                     minSize: 0,
                                     onPressed: () {
                                       selectDOb(context);
@@ -292,6 +319,15 @@ class _AddEmployeeScreenViewState extends State<AddEmployeeScreenView> {
                                 controller: dobController,
                               ),
                               TextFieldCustom(
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  isMandidatory: true,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return "Please select Date Of Birth";
+                                    }
+                                    return null;
+                                  },
                                   hintText: 'Select Designation',
                                   suffixWidget: const Icon(
                                     CupertinoIcons.chevron_down,
@@ -301,7 +337,6 @@ class _AddEmployeeScreenViewState extends State<AddEmployeeScreenView> {
                                   controller: designationController,
                                   readOnlyField: true,
                                   onTap: () {
-                                    print("hello");
                                     showModal(context);
                                   }),
                               CustomDropdownButtonFormField(
@@ -311,15 +346,18 @@ class _AddEmployeeScreenViewState extends State<AddEmployeeScreenView> {
                                   if (selectedGender?.id == null) {
                                     return 'Please select Gender';
                                   }
+                                  return null;
                                 },
                                 hintText: "select one",
                                 value: selectedGender,
                                 ismandiatory: true,
-                                items: genderList!,
+                                items: genderList,
                                 onChanged: (value) {
                                   selectedGender = value as DropdownModel;
-                                  if (value != null) {}
                                   setState(() {});
+
+                                  controller(uiRender: false)
+                                      .validateFrom(loginFormkey);
                                 },
                               ),
                               gap,
@@ -329,7 +367,7 @@ class _AddEmployeeScreenViewState extends State<AddEmployeeScreenView> {
 
                                   if (selectedfile != null) {
                                     haveCvbool = true;
-                                    addFormKey.currentState!.validate();
+                                    loginFormkey.currentState!.validate();
                                     setState(() {});
                                   }
                                 },
@@ -341,6 +379,7 @@ class _AddEmployeeScreenViewState extends State<AddEmployeeScreenView> {
                                           return "please pick cv";
                                         }
                                         setState(() {});
+                                        return null;
                                       },
                                       labelText: 'Select Resume',
                                       isMandidatory: true,
@@ -375,17 +414,15 @@ class _AddEmployeeScreenViewState extends State<AddEmployeeScreenView> {
                               ),
                               gapXL,
                               Consumer<LoginProvider>(
-                                  builder: (context, controller, _) {
+                                  builder: (context, controllers, _) {
                                 return SubmitButton(
-                                  isEnabled:
-                                      addFormKey.currentState?.validate(),
-                                  // (addFormKey.currentState?.validate() ??
-                                  //     false),
+                                  isEnabled: checkData(),
+                                  //controller(uiRender: true).isValid,
                                   "Save",
-                                  showLoader: controller.employeeAddLoading,
+                                  showLoader: controllers.employeeAddLoading,
                                   onTap: (value) {
-                                    addFormKey.currentState!.validate();
-                                    if (addFormKey.currentState!.validate()) {
+                                    loginFormkey.currentState!.validate();
+                                    if (loginFormkey.currentState!.validate()) {
                                       saveFunction();
                                     } else {
                                       checkvalidation = true;
@@ -394,9 +431,6 @@ class _AddEmployeeScreenViewState extends State<AddEmployeeScreenView> {
 
                                       HapticFeedback.heavyImpact();
                                     }
-
-                                    // Navigator.pushReplacementNamed(
-                                    //     context, EmployeelistingScreenView.path);
                                   },
                                 );
                               })
@@ -433,21 +467,29 @@ class _AddEmployeeScreenViewState extends State<AddEmployeeScreenView> {
     // Navigator.pop(context);
   }
 
+  bool checkData() {
+    if (firstnameController != null &&
+        (lastnameController.text != null && lastnameController.text != '') &&
+        selectedDob != null &&
+        designationId != null &&
+        selectedGender != null &&
+        (emailController.text != null && emailController.text != '') &&
+        (mobilenumberController.text != null &&
+            mobilenumberController.text != '') &&
+        (addressnumberController.text != null &&
+            addressnumberController.text != '') &&
+        selectedImag != null &&
+        selectedfile != null) {
+      return true;
+    }
+    return false;
+  }
+
   Future<File?> filepicker() async {
     File? file = await FilePickerService().pickFile(
       fileType: FileType.custom,
       allowedExtensions: [
-        // 'docx',
-        // 'doc',
-        // 'xlsx',
-        // 'xls',
-        // 'pptx',
-        // 'ppt',
         'pdf',
-        // 'txt',
-        // 'png',
-        // 'jpeg',
-        // 'jpg',
       ],
     );
     return file;
@@ -455,7 +497,6 @@ class _AddEmployeeScreenViewState extends State<AddEmployeeScreenView> {
 
   void showModal(context) {
     double h = MediaQuery.of(context).size.height;
-    double w = MediaQuery.of(context).size.width;
     // changeSystemColor(Colors.pink);
     showModalBottomSheet(
         context: context,

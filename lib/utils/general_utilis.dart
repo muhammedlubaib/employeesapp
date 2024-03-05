@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:employeesapp/res/style/color.dart';
 import 'package:employeesapp/res/style/dimensions.dart';
 import 'package:employeesapp/res/style/text_styles.dart';
@@ -9,7 +7,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class TextFieldCustom extends StatelessWidget {
   const TextFieldCustom(
-      {Key? key,
+      {super.key,
       this.controller,
       this.prefixWidget,
       this.labelText,
@@ -48,8 +46,7 @@ class TextFieldCustom extends StatelessWidget {
       this.isMandidatory,
       this.englishTestField,
       this.perctangeField,
-      this.enableSuggestions})
-      : super(key: key);
+      this.enableSuggestions});
   final bool? isMandidatory;
   final TextEditingController? controller;
   final Widget? prefixWidget;
@@ -121,8 +118,9 @@ class TextFieldCustom extends StatelessWidget {
                             const EdgeInsets.only(left: 8, bottom: 8, top: 8),
                         child: Text(labelText ?? '', style: body1Medium600),
                       )
-                    : SizedBox(),
+                    : const SizedBox(),
             TextFormField(
+              scrollPadding: const EdgeInsets.only(bottom: 20),
               focusNode: focusNode,
               onChanged: onChanged,
               initialValue: initialValue,
@@ -386,7 +384,7 @@ InputDecoration get defaultInputDecoration => InputDecoration(
 
 class SubmitButton extends StatefulWidget {
   const SubmitButton(this.title,
-      {Key? key,
+      {super.key,
       this.onTap,
       this.padding = 14,
       this.backgroundColor = ColorResources.buttonColor,
@@ -397,11 +395,10 @@ class SubmitButton extends StatefulWidget {
       this.radius,
       this.suffix,
       this.isEnabled,
-      this.showLoader})
-      : super(key: key);
+      this.showLoader});
 
   const SubmitButton.disabled(this.title,
-      {Key? key,
+      {super.key,
       this.onTap,
       this.padding = 14,
       this.backgroundColor = ColorResources.GREY3,
@@ -412,8 +409,7 @@ class SubmitButton extends StatefulWidget {
       this.radius,
       this.suffix,
       this.showLoader,
-      this.isEnabled})
-      : super(key: key);
+      this.isEnabled});
 
   final ValueChanged<VoidCallback>? onTap;
   final String title;
@@ -436,23 +432,19 @@ class _SubmitButtonState extends State<SubmitButton>
     with TickerProviderStateMixin {
   bool showLoader = false;
   // bool isEnabled = false;
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-          showLoader = widget.showLoader ?? false;
-    });
-
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   showLoader = widget.showLoader ?? false;
+    // });
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    showLoader = widget.showLoader ?? false;
     return Padding(
       padding: const EdgeInsets.only(bottom: 18),
       child: SizedBox(

@@ -1,51 +1,56 @@
-import 'package:employeesapp/helper/env/development_env.dart';
-import 'package:employeesapp/helper/env/env.dart';
-import 'package:employeesapp/helper/env/production_end.dart';
-import 'package:employeesapp/helper/env/staging_env.dart';
+import 'package:employeesapp/helper/di.dart';
+import 'package:employeesapp/helper/env/core_bloc.dart';
+
 import 'package:employeesapp/res/style/app_theme.dart';
-import 'package:employeesapp/res/style/color.dart';
-import 'package:employeesapp/utils/custom_snackbar.dart';
 
 import 'package:employeesapp/utils/routes/app_route.dart';
-import 'package:employeesapp/view/login/login_screen_view.dart';
+
 import 'package:employeesapp/view_model/auth_view_model/auth_view_model.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 final globalNavigatorKey = GlobalKey<NavigatorState>();
-final _messangerKey = GlobalKey<ScaffoldMessengerState>();
+
 
 // void main() {
 //   runApp(const MyApp());
 // }
 
-void main() => getEnvironment();
-
-getEnvironment() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-// 0 - Development, 1 - Staging, 2 - Production
-  // fetch environment value in const variable only.
-  // set configuration --dart-define=ENVIRONMENT_TYPE=1
-  // default production environment will be loaded.
-  const environment = int.fromEnvironment(
-    'ENVIRONMENT_TYPE',
-    defaultValue: 1,
-  );
-  switch (EnvironmentType.values[environment]) {
-    case EnvironmentType.development:
-      return DevelopmentEnv();
-    case EnvironmentType.staging:
-      return StagingEnv();
-    case EnvironmentType.production:
-      return ProductionEnv();
-    default:
-      return ProductionEnv();
-  }
+void main() {
+  boot();
+  runApp(const MyApp());
 }
+
+boot() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DI.inject();
+  await CoreBloc().initSharedData();
+}
+
+// getEnvironment() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+// // 0 - Development, 1 - Staging, 2 - Production
+//   // fetch environment value in const variable only.
+//   // set configuration --dart-define=ENVIRONMENT_TYPE=1
+//   // default production environment will be loaded.
+//   const environment = int.fromEnvironment(
+//     'ENVIRONMENT_TYPE',
+//     defaultValue: 1,
+//   );
+//   switch (EnvironmentType.values[environment]) {
+//     case EnvironmentType.development:
+//       return DevelopmentEnv();
+//     case EnvironmentType.staging:
+//       return StagingEnv();
+//     case EnvironmentType.production:
+//       return ProductionEnv();
+//     default:
+//       return ProductionEnv();
+//   }
+// }
 
 // class MyApp extends StatelessWidget {
 //   const MyApp();
@@ -71,9 +76,9 @@ getEnvironment() async {
 // }
 
 class MyApp extends StatefulWidget {
-  final Env env;
-
-  const MyApp({super.key, required this.env});
+  const MyApp({
+    super.key,
+  });
 
   @override
   State<MyApp> createState() => _MyAppState();

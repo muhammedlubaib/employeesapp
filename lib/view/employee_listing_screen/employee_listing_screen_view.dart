@@ -16,7 +16,7 @@ import 'package:provider/provider.dart';
 
 class EmployeelistingScreenView extends StatefulWidget {
   static const String path = "employeelistingscreen";
-  const EmployeelistingScreenView();
+  const EmployeelistingScreenView({super.key});
 
   @override
   State<EmployeelistingScreenView> createState() =>
@@ -38,7 +38,7 @@ class _EmployeelistingScreenViewState extends State<EmployeelistingScreenView> {
   }
 
   Future<void> _handlePageRequest(int pageKey) async {
-    print("check 123");
+  
     fetchPage(pageKey);
   }
 
@@ -55,9 +55,7 @@ class _EmployeelistingScreenViewState extends State<EmployeelistingScreenView> {
               .employeelistviewApi(context: context, page: pageKey);
 
       final isLastPage = newItems.isLastPage;
-      print('###isLastPage: ${newItems.isLastPage}');
-      print('###currenPage: ${newItems.currenPage}');
-      print('###nextPage: ${newItems.nextPage}');
+
 
       if (isLastPage) {
         pagingController.appendLastPage(newItems.newItems);
@@ -73,7 +71,7 @@ class _EmployeelistingScreenViewState extends State<EmployeelistingScreenView> {
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
-    double w = MediaQuery.of(context).size.width;
+   
 
     return Scaffold(
       appBar: AppbarCustom(
@@ -125,7 +123,7 @@ class _EmployeelistingScreenViewState extends State<EmployeelistingScreenView> {
         onPressed: ()async {
           bool? dataAdded =
            await   Navigator.pushNamed(context, AddEmployeeScreenView.path) as bool?;
-          if (dataAdded == true ?? false) {
+          if (dataAdded == true) {
             pagingController.refresh();
           }
         },
@@ -145,6 +143,7 @@ class _EmployeelistingScreenViewState extends State<EmployeelistingScreenView> {
             arguments: data);
       },
       leading: Visibility(
+          // ignore: unnecessary_null_comparison
           visible: data.profileImage != null,
           child: Container(
             height: 60,
@@ -154,7 +153,7 @@ class _EmployeelistingScreenViewState extends State<EmployeelistingScreenView> {
                 // border: Border.all(width: 5, color: ColorResources.GREY4),
                 shape: BoxShape.circle,
                 image: DecorationImage(
-                    image: NetworkImage(data.profileImage ?? ''))),
+                    image: NetworkImage(data.profileImage))),
           )
           //  Container(
           //     decoration: BoxDecoration(shape: BoxShape.circle),

@@ -1,4 +1,4 @@
-import 'dart:convert';
+
 import 'dart:io';
 
 import 'package:employeesapp/gen/assets.gen.dart';
@@ -62,12 +62,11 @@ class _ProfileImageState extends State<ProfileImage> {
                                 width: 5, color: ColorResources.tabBarGrey),
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                                image: (userLocalData == null ||
-                                        userLocalData!.isEmpty)
+                                image: (userLocalData.isEmpty)
                                     ? AssetImage(
                                             Assets.icon.dummyprofile.keyName)
                                         as ImageProvider<Object>
-                                    : NetworkImage(userLocalData ?? '')
+                                    : NetworkImage(userLocalData)
 
                                 // image:
                                 //  widget.dbImage == null
@@ -89,7 +88,7 @@ class _ProfileImageState extends State<ProfileImage> {
               bottom: 1,
               child: Container(
                 decoration:
-                    BoxDecoration(shape: BoxShape.circle, boxShadow: []),
+                    const BoxDecoration(shape: BoxShape.circle, boxShadow: []),
                 child: CupertinoButton(
                   pressedOpacity: 0.7,
                   padding: EdgeInsets.zero,

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -8,7 +10,7 @@ import 'package:employeesapp/models/employee_add_params.dart';
 import 'package:employeesapp/res/pagenation_model.dart';
 import 'package:employeesapp/utils/app_url.dart';
 import 'package:employeesapp/utils/custom_snackbar.dart';
-import 'package:employeesapp/utils/local_storage.dart/user_data.dart';
+
 import 'package:employeesapp/view/employee_listing_screen/employee_listing_screen_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +24,18 @@ class LoginProvider extends ChangeNotifier {
   bool employeeAddLoading = false;
   String? errorMessage;
   List<EmployeeModel> employeeModelList = [];
+
+  bool isValid = false;
+
+  void validateFrom(GlobalKey<FormState> loginFormkey) {
+    Future.delayed(
+      const Duration(milliseconds: 100),
+      () {
+        isValid = loginFormkey.currentState!.validate();
+        notifyListeners();
+      },
+    );
+  }
 
   // final dio = Dio();
 
@@ -125,11 +139,6 @@ class LoginProvider extends ChangeNotifier {
       final response = await dioClient.post(Urls.employeesUrl,
           data: await params.toFormData(),
           options: Options(headers: {'Authorization': action}));
-      // log(response as String);
-
-      // employeeModelList = (response.data['data']['data'] as List)
-      //     .map((e) => EmployeeModel.fromJson(e))
-      //     .toList();
 
       employeeAddLoading = false;
       notifyListeners();

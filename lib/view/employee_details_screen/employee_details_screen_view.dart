@@ -14,12 +14,12 @@ class EmployeeDetailScreenView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double h = MediaQuery.of(context).size.height;
+
     double w = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppbarCustom(
           backButtonRequired: true,
-          title: "${data.firstName ?? ''} ${data.lastName ?? ''}"),
+          title: "${data.firstName} ${data.lastName}"),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -29,14 +29,14 @@ class EmployeeDetailScreenView extends StatelessWidget {
                 gapLarge,
                 ProfileImage(
                   icon: "",
-                  dbImage: data.profileImage ?? '',
+                  dbImage: data.profileImage,
                 ),
                 Text(
-                  "${data.firstName ?? ''} ${data.lastName ?? ''}",
+                  "${data.firstName} ${data.lastName}",
                   style: h4,
                 ),
                 Text(
-                  data.status ?? '',
+                  data.status,
                   style: body1Medium,
                 ),
                 gapLarge,
@@ -58,20 +58,20 @@ class EmployeeDetailScreenView extends StatelessWidget {
                         TableRow(
                           children: [
                             titleandsubtile(
-                                'Contact Number', data.mobile ?? ''),
-                            titleandsubtile('Email', data.email ?? ''),
+                                'Contact Number', data.mobile),
+                            titleandsubtile('Email', data.email),
                           ],
                         ),
                         TableRow(
                           children: [
                             titleandsubtile('Date of Birth',
-                                formatDate(data.dateOfBirth.toString() ?? '')),
-                            titleandsubtile('Gender', data.gender ?? ""),
+                                formatDate(data.dateOfBirth.toString())),
+                            titleandsubtile('Gender', data.gender),
                           ],
                         ),
                         TableRow(children: [
                           titleandsubtile(
-                              'Address', data.permanentAddress ?? ''),
+                              'Address', data.permanentAddress),
                           const SizedBox(),
                         ])
                       ],
@@ -97,7 +97,7 @@ class EmployeeDetailScreenView extends StatelessWidget {
               TextSpan(
                   text: '$title\n',
                   style: heading1.copyWith(color: ColorResources.PRIMARY)),
-              WidgetSpan(
+              const WidgetSpan(
                   child: SizedBox(
                 height: 20,
               )),

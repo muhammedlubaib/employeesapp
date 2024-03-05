@@ -55,9 +55,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+// ignore: must_be_immutable
 class CustomDropdownButtonFormField<T> extends StatefulWidget {
   CustomDropdownButtonFormField(
-      {Key? key,
+      {super.key,
       this.labelText,
       this.hintText,
       required this.items,
@@ -73,8 +74,7 @@ class CustomDropdownButtonFormField<T> extends StatefulWidget {
       this.suffix,
       this.prefixStyle,
       this.prefixText,
-      this.isMandidatory})
-      : super(key: key);
+      this.isMandidatory});
 
   final String? labelText;
   final String? hintText;
@@ -137,7 +137,7 @@ class _CustomDropdownButtonFormFieldState<T>
         DropdownButtonFormField<T>(
           autovalidateMode: AutovalidateMode.onUserInteraction,
 
-          icon: SizedBox(),
+          icon: const SizedBox(),
           borderRadius: BorderRadius.circular(18.0),
           decoration: defaultInputDecoration.copyWith(
             filled: true,
